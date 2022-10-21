@@ -1,3 +1,5 @@
+require 'byebug'
+
 class PolyTreeNode
     attr_reader :value, :parent
     attr_accessor :children
@@ -39,5 +41,30 @@ class PolyTreeNode
         end 
     end
 
+    def dfs(target)
+        #return node if node == target
+        #for each child of node
+        #   result = dfs(child, target)
+        #   return result unless result is nil
+        #return nil
+        return self if self.value == target
+        @children.each do |child|
+            result = child.dfs(target)
+            return result unless result.nil?
+        end
+        return nil
+    end
+
+    def inspect
+        #"<PolyTreeNode:#{self.object_id}, val:#{@value}, children:#{@children}>"
+        "<PolyTreeNode:#{@value}>"
+    end
     
 end
+
+# a = PolyTreeNode.new('A')
+# b = PolyTreeNode.new('B')
+# c = PolyTreeNode.new('C')
+# b.parent = a
+# c.parent = a
+# a.dfs('C')
