@@ -3,6 +3,7 @@ require 'set'
 require 'byebug'
 
 class KnightPathFinder
+    attr_reader :root_node
     attr_accessor :considered_positions
 
     def initialize(initial_pos)
@@ -47,6 +48,6 @@ class KnightPathFinder
     end
 end
 
-debugger
-k = KnightPathFinder.new([0,0])
-k.build_move_tree
+# debugger
+# k = KnightPathFinder.new([0,0])
+# k.build_move_tree

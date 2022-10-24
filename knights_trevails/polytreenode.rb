@@ -61,8 +61,8 @@ class PolyTreeNode
 
 
     def inspect
-        #"<PolyTreeNode:#{self.object_id}, val:#{@value}, children:#{@children}>"
-        "<PolyTreeNode:#{@value}>"
+        "<PolyTreeNode: val:#{@value}, children:#{@children}>"
+        # "<PolyTreeNode:#{@value}>"
     end
     
 end
