@@ -46,6 +46,29 @@ class KnightPathFinder
             positions.each { |pos| queue.push(pos) }
         end
     end
+
+    def find_path(end_pos)
+        end_node = dfs(@root_node, end_pos)
+        return trace_path_back(end_node)
+    end
+
+    def dfs(node, target)
+        return node if node.value == target
+        
+        node.children.each do |child|
+            result = dfs(child, target)
+            return result unless result.nil? 
+        end
+        nil
+    end
+
+    def trace_path_back(node)
+        path = [node.value]
+        return path if node.parent.nil? 
+
+        return trace_path_back(node.parent) + path
+    end
+
 end
 
 # debugger
