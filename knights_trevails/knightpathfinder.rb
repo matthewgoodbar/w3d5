@@ -1,15 +1,18 @@
 require_relative './polytreenode.rb'
+require 'set'
+require 'byebug'
 
 class KnightPathFinder
     attr_accessor :considered_positions
 
     def initialize(initial_pos)
         if KnightPathFinder.within_board(initial_pos)
-            root_node = PolyTreeNode.new(initial_pos)
+            @root_node = PolyTreeNode.new(initial_pos)
         else
             raise RuntimeError.new "Not a valid starting position"
         end
-        @considered_positions = [initial_pos]
+        @considered_positions = Set.new
+        @considered_positions.add(initial_pos)
     end
 
     def self.valid_moves(pos)
@@ -26,6 +29,7 @@ class KnightPathFinder
 
     def new_move_positions(pos)
         valids = KnightPathFinder.valid_moves(pos)
+        valids.reject! {|pos| @considered_positions.include?(pos) }
         @considered_positions += valids
         return valids
 
@@ -33,16 +37,16 @@ class KnightPathFinder
 
     def build_move_tree
         queue = [@root_node]
-        considered_positions = Set.new
-        considered_positions.add(@root_node)
         until queue.empty? 
-            current_node = queue.pop
+            current_node = queue.shift
             positions = new_move_positions(current_node.value)
             positions.map! { |pos| PolyTreeNode.new(pos) }
-            positions.reject! { |pos| considered_positions.include?(pos) }
-            positions.each { |pos| considered_positions.add(pos) }
             positions.each { |pos| pos.parent = current_node}
-            positions.each { |pos| queue.unshift(pos) }
+            positions.each { |pos| queue.push(pos) }
         end
     end
 end
+
+debugger
+k = KnightPathFinder.new([0,0])
+k.build_move_tree
