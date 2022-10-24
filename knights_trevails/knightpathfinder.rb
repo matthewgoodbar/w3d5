@@ -28,5 +28,21 @@ class KnightPathFinder
         valids = KnightPathFinder.valid_moves(pos)
         @considered_positions += valids
         return valids
+
+    end
+
+    def build_move_tree
+        queue = [@root_node]
+        considered_positions = Set.new
+        considered_positions.add(@root_node)
+        until queue.empty? 
+            current_node = queue.pop
+            positions = new_move_positions(current_node.value)
+            positions.map! { |pos| PolyTreeNode.new(pos) }
+            positions.reject! { |pos| considered_positions.include?(pos) }
+            positions.each { |pos| considered_positions.add(pos) }
+            positions.each { |pos| pos.parent = current_node}
+            positions.each { |pos| queue.unshift(pos) }
+        end
     end
 end
